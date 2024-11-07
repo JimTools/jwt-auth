@@ -3,7 +3,7 @@ on:
   push:
     branches:
       - main
-      - 2.x
+      - 1.x
   pull_request:
   workflow_dispatch:
 
@@ -17,7 +17,7 @@ jobs:
       fail-fast: false
       matrix:
         operating-system: [ubuntu-latest]
-        php-versions: ["8.1", "8.2", "8.3"]
+        php-versions: ["8.1", "8.2", "8.3", "8.4"]
         dependency-versions: ["highest"]
     runs-on: ${{ matrix.operating-system }}
     steps:
