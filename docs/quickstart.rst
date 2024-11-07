@@ -4,7 +4,7 @@ Quickstart
 
 This page provides a quick introduction to JWT-Auth and introductory examples.
 If you have not already installed, JWT-Auth, head over to the
-:ref:`installation` page.
+:doc:`overview` page.
 
 This quickstart will use Slim framework as am example but this will work with
 any PSR-15 compliant framework.
