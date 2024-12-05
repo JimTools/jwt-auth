@@ -442,7 +442,7 @@ final class JwtAuthentication implements MiddlewareInterface
     /**
      * Set the logger.
      */
-    private function logger(LoggerInterface $logger = null): void
+    private function logger(?LoggerInterface $logger = null): void
     {
         $this->logger = $logger;
     }
