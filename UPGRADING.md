@@ -55,7 +55,7 @@ return RectorConfig::configure()
     ])
     ->withRules([
         JwtAuthUpgradeRector::class,
-    ])
+    ]);
 ```
 
 Run rector in dry run mode, this will show the changes that will be made before applying them, once you are ready to
