@@ -47,7 +47,7 @@ final class JwtAuthenticationTest extends TestCase
      * @var array<string, mixed>
      */
     public static array $acmeTokenArray = [
-        'iss' => 'Acme Toothpics Ltd',
+        'iss' => 'Acme Toothpicks Ltd',
         'aud' => 'www.example.com',
         'sub' => 'someone@example.com',
         'scope' => ['read', 'write', 'delete'],
@@ -397,7 +397,7 @@ final class JwtAuthenticationTest extends TestCase
         $response = $collection->dispatch($request, $default);
 
         self::assertSame(200, $response->getStatusCode());
-        self::assertSame('Acme Toothpics Ltd', (string) $response->getBody());
+        self::assertSame('Acme Toothpicks Ltd', (string) $response->getBody());
     }
 
     public function testShouldAttachCustomToken(): void
@@ -426,7 +426,7 @@ final class JwtAuthenticationTest extends TestCase
         $response = $collection->dispatch($request, $default);
 
         self::assertSame(200, $response->getStatusCode());
-        self::assertSame('Acme Toothpics Ltd', (string) $response->getBody());
+        self::assertSame('Acme Toothpicks Ltd', (string) $response->getBody());
     }
 
     public function testShouldCallAfterWithProperArguments(): void
