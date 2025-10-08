@@ -11,11 +11,6 @@ parameters:
 			path: src/Rector/JwtAuthUpgradeRector.php
 
 		-
-			message: "#^Class Symplify\\\\RuleDocGenerator\\\\ValueObject\\\\RuleDefinition constructor invoked with 1 parameter, 2 required\\.$#"
-			count: 1
-			path: src/Rector/JwtAuthUpgradeRector.php
-
-		-
 			message: "#^Instanceof between \\*NEVER\\* and ArrayAccess will always evaluate to false\\.$#"
 			count: 1
 			path: src/Rector/JwtAuthUpgradeRector.php
@@ -24,23 +19,3 @@ parameters:
 			message: "#^Parameter \\#1 \\$callback of function array_map expects \\(callable\\(PhpParser\\\\Node\\\\ArrayItem\\)\\: mixed\\)\\|null, Closure\\(PhpParser\\\\Node\\\\Expr\\\\ArrayItem\\)\\: mixed given\\.$#"
 			count: 1
 			path: src/Rector/JwtAuthUpgradeRector.php
-
-		-
-			message: "#^Parameter \\#1 \\$items of class PhpParser\\\\Node\\\\Expr\\\\Array_ constructor expects array\\<PhpParser\\\\Node\\\\ArrayItem\\>, array\\<int, PhpParser\\\\Node\\\\Expr\\\\ArrayItem\\> given\\.$#"
-			count: 1
-			path: src/Rector/JwtAuthUpgradeRector.php
-
-		-
-			message: "#^Parameter \\#1 \\$secrets of method JimTools\\\\JwtAuth\\\\Rector\\\\JwtAuthUpgradeRector\\:\\:createDecoderArgs\\(\\) expects array\\<PhpParser\\\\Node\\\\Expr\\>, array\\<int\\|string, PhpParser\\\\Node\\\\Expr\\>\\|null given\\.$#"
-			count: 1
-			path: src/Rector/JwtAuthUpgradeRector.php
-
-		-
-			message: "#^Parameter \\#1 \\$uses of class PhpParser\\\\Node\\\\Stmt\\\\Use_ constructor expects array\\<PhpParser\\\\Node\\\\UseItem\\>, array\\<int, PhpParser\\\\Node\\\\Stmt\\\\UseUse\\> given\\.$#"
-			count: 1
-			path: src/Rector/JwtAuthUpgradeRector.php
-
-		-
-			message: "#^Parameter \\#1 \\$string of method Psr\\\\Http\\\\Message\\\\StreamInterface\\:\\:write\\(\\) expects string, mixed given\\.$#"
-			count: 2
-			path: tests/JwtAuthenticationTest.php

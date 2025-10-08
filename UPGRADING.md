@@ -1,7 +1,7 @@
 # Updgrading from 1.x to 2.x
 
 v2 is a massive overall of the package and with this comes breaking changes, the list below outlines some of the most
-notible changes but it's not extencive.
+notable changes but it's not extensive.
 
 - Minimum PHP 8.1+
 - Namespace changed
@@ -12,8 +12,8 @@ notible changes but it's not extencive.
 - removed error handler
 - Before and After handlers changed
 
-The recommeded upgrade path is to use [Rector](https://github.com/rectorphp/rector) this will automate the bulk of the
-changes however there are somethings which cannot be be automated and will need manual intervention, see
+The recommended upgrade path is to use [Rector](https://github.com/rectorphp/rector) this will automate the bulk of the
+changes however there are something's which cannot be be automated and will need manual intervention, see
 [limitations](#limitations) for more details
 
 Error handling is now upto the developer to impliment, the middleware will throw exceptions which need to
@@ -21,16 +21,16 @@ be handled at the global level. for more infomation about which exceptions can b
 [DecoderInterface](./src/Decoder/DecoderInterface.php) all exception extend
 `JimTools\JwtAuth\Exceptions\AuthorizationException`.
 
-## Rector (Recomended)
+## Rector (Recommended)
 
-v2 is shipped with customer rector rule which will can be used to automated the bulk of the work, you will need to
-require rector into your dev depedencies.
+v2 is shipped with customer rector rule which will, can be used to automate the bulk of the work, you will need to
+require rector into your dev dependencies.
 
 ### Limitations
 
 There are some limitation with this rule around the `before` and `after` handlers, new files cannot be created so any
-closure will be converted into a annoyemus class, the output doesn't create valid php code. you will manually have to
-move each annoyemus class into a new file and conver this into a standard class i.e. `BeforeHandler`
+closure will be converted into a anonymous class, the output doesn't create valid php code. you will manually have to
+move each anonymous class into a new file and conver this into a standard class i.e. `BeforeHandler`
 
 If the options are passed to the middleware via a variable instead of an inline array the rector rule will throw an
 exception. currently only inline arrays are supports.
@@ -136,7 +136,7 @@ The `after` handler must be a class which extends the interface `JimTools\JwtAut
 +   ]))
 ```
 
-Example implimentation
+Example implementation
 
 ```php
 use JimTools\JwtAuth\Handlers\AfterHandlerInterface;
@@ -153,7 +153,7 @@ class MyAfterHandler implements AfterHandlerInterface
 
 ### Rules Option
 
-The rules options have been moved into it's own argument on `JwtAuthentication`
+The rules options have been moved into its own argument on `JwtAuthentication`
 
 ### Secret Option
 

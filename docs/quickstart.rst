@@ -9,7 +9,7 @@ If you have not already installed, JWT-Auth, head over to the
 This quickstart will use Slim framework as am example but this will work with
 any PSR-15 compliant framework.
 
-Basic Useage
+Basic Usage
 ============
 
 The below example is the most basic use of the middleware, acting as a global
@@ -50,7 +50,7 @@ Custom Rules
 
 You may not always want a global authentication on all routes this is where
 custom rules comes in, the third parameter of ``JwtAuthentication`` allow you to
-specify which routes to authentication. the third argumet should be an array of
+specify which routes to authentication. the third argument should be an array of
 ``JimTools\JwtAuth\Rules\RuleInterface``
 
 .. code-block:: php
@@ -71,7 +71,7 @@ specify which routes to authentication. the third argumet should be an array of
 
 Out of the box there are two rules provided ``RequestMethodRule`` and
 ``RequestPathRule``, these should cover 90% of all use cases but if you need
-fine-grained control you can while your own custom rules which impliments
+fine-grained control you can while your own custom rules which implements
 the ``RuleInterface`` interface.
 
 RequestMethodRule
@@ -80,7 +80,7 @@ RequestMethodRule
 This rule allows you bypass all request with a specific HTTP method, by default
 it will ignore ``OPTION``, check out
 `MDN Http Request Methods <https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods>`_
-for more infomation on methods.
+for more information on methods.
 
 RequestPathRule
 ---------------
@@ -93,7 +93,7 @@ string literal or a regular expression for example.
 
 .. code-block:: php
 
-  new RequestPathRule(['/privte', '/users/\d+'])
+  new RequestPathRule(['/private', '/users/\d+'])
 
 ignore is a list or URI where authentication will be bypassed, this can by a
 string literal or a regular expression for example.
@@ -103,13 +103,13 @@ string literal or a regular expression for example.
   new RequestPathRule(['/'], ['/auth/login', '/products/[a-zA-Z0-9_-]]'])
 
 .. note::
-  All regular expressions are **not** treated as case insensative.
+  All regular expressions are **not** treated as case insensitive.
 
 Multiple Tokens
 ===============
 
 If you need to parse multiple token from different source it's possible, all you
-need to do is pass multiple secrts to the to the decoder see the below example.
+need to do is pass multiple secrets to the to the decoder see the below example.
 
 .. code-block:: php
 

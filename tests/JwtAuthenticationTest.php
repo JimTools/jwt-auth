@@ -30,6 +30,8 @@ use RuntimeException;
 
 /**
  * @internal
+ *
+ * @phpstan-type TokenClaims array{iss: string, aud: string, sub: string, scope: array<string>}
  */
 #[CoversClass(JwtAuthentication::class)]
 #[UsesClass(Secret::class), UsesClass(Options::class), UsesClass(FirebaseDecoder::class)]
@@ -45,7 +47,7 @@ final class JwtAuthenticationTest extends TestCase
      * @var array<string, mixed>
      */
     public static array $acmeTokenArray = [
-        'iss' => 'Acme Toothpics Ltd',
+        'iss' => 'Acme Toothpicks Ltd',
         'aud' => 'www.example.com',
         'sub' => 'someone@example.com',
         'scope' => ['read', 'write', 'delete'],
@@ -381,7 +383,7 @@ final class JwtAuthenticationTest extends TestCase
             ->withHeader('Authorization', 'Bearer ' . self::$acmeToken);
 
         $default = static function (ServerRequestInterface $request) {
-            /** @var array<string, mixed> */
+            /** @var TokenClaims $acmeToken */
             $acmeToken = $request->getAttribute('token');
 
             $response = (new ResponseFactory())->createResponse();
@@ -395,7 +397,7 @@ final class JwtAuthenticationTest extends TestCase
         $response = $collection->dispatch($request, $default);
 
         self::assertSame(200, $response->getStatusCode());
-        self::assertSame('Acme Toothpics Ltd', (string) $response->getBody());
+        self::assertSame('Acme Toothpicks Ltd', (string) $response->getBody());
     }
 
     public function testShouldAttachCustomToken(): void
@@ -405,7 +407,7 @@ final class JwtAuthenticationTest extends TestCase
             ->withHeader('Authorization', 'Bearer ' . self::$acmeToken);
 
         $default = static function (ServerRequestInterface $request) {
-            /** @var array<string, mixed>$acmeToken */
+            /** @var TokenClaims $acmeToken */
             $acmeToken = $request->getAttribute('nekot');
 
             $response = (new ResponseFactory())->createResponse();
@@ -424,7 +426,7 @@ final class JwtAuthenticationTest extends TestCase
         $response = $collection->dispatch($request, $default);
 
         self::assertSame(200, $response->getStatusCode());
-        self::assertSame('Acme Toothpics Ltd', (string) $response->getBody());
+        self::assertSame('Acme Toothpicks Ltd', (string) $response->getBody());
     }
 
     public function testShouldCallAfterWithProperArguments(): void

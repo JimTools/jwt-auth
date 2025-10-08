@@ -3,7 +3,7 @@ Decoder
 =======
 
 By default JWT-Auth ships with a jwt decode this is based on the
-`Firebase JWT <https://github.com/firebase/php-jwt>`_ libary this will cover
+`Firebase JWT <https://github.com/firebase/php-jwt>`_ library this will cover
 most common uses.
 
 .. code-block:: php
@@ -44,9 +44,9 @@ to work out which secret to use for the token.
 
 .. note::
 
-  when only using a signular algorithm and secret you can leave this as null
+  when only using a singular algorithm and secret you can leave this as null
 
-Excptions
+Exceptions
 =========
 
 If the decoder cannnot decode the token it will throw one of several exception.

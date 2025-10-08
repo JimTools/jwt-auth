@@ -3,7 +3,7 @@
 ## Thanks for contributing!
 
 Following these guidelines improves the possibility of your pull request to get
-accepted. They also help to save everyones time.
+accepted. They also help to save everyone's time.
 
 ## Only one feature or change per pull request
 

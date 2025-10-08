@@ -1,4 +1,4 @@
-.. title:: JWT-Auth, JWT Authentication Middlewrae
+.. title:: JWT-Auth, JWT Authentication Middleware
 
 ======================
 JWT-Auth Documentation

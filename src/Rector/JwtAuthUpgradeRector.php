@@ -111,7 +111,7 @@ final class JwtAuthUpgradeRector extends AbstractRector
      */
     public function getRuleDefinition(): RuleDefinition
     {
-        return new RuleDefinition('Upgrades JwtAuthentication from v1 to v2');
+        return new RuleDefinition('Upgrades JwtAuthentication from v1 to v2', []);
     }
 
     /**
@@ -231,7 +231,7 @@ final class JwtAuthUpgradeRector extends AbstractRector
             $algo = [new String_('HS256')];
         }
 
-        return [$optionArgs, $this->createDecoderArgs($secret, $algo), $rules];
+        return [$optionArgs, $this->createDecoderArgs($secret ?? [], $algo), $rules];
     }
 
     private function convertAfter(Closure $val): New_

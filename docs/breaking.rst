@@ -1,5 +1,5 @@
 =================
-Breakinng Changes
+Breaking Changes
 =================
 
 The default ``algorithm`` has changed from ``['HS256', 'HS512', 'HS384']`` to ``['HS256']`` in most cases this will not
