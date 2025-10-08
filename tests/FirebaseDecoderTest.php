@@ -6,7 +6,6 @@ namespace JimTools\JwtAuth\Test;
 
 use DateTime;
 use Firebase\JWT\JWT;
-use Generator;
 use JimTools\JwtAuth\Decoder\DecoderInterface;
 use JimTools\JwtAuth\Decoder\FirebaseDecoder;
 use JimTools\JwtAuth\Exceptions\BeforeValidException;
@@ -42,18 +41,18 @@ final class FirebaseDecoderTest extends TestCase
         (new FirebaseDecoder())->decode('..');
     }
 
-    public static function malformedProvider(): Generator
-    {
-        yield 'empty' => [''];
-
-        yield 'malformed' => ['x.y'];
-    }
-
-    #[DataProvider('malformedProvider')]
+    #[DataProvider('provideUnexpectedValueExceptionIsThrownCases')]
     public function testUnexpectedValueExceptionIsThrown(string $token): void
     {
         $this->expectException(UnexpectedValueException::class);
         $this->decoder->decode($token);
+    }
+
+    public static function provideUnexpectedValueExceptionIsThrownCases(): iterable
+    {
+        yield 'empty' => [''];
+
+        yield 'malformed' => ['x.y'];
     }
 
     public function testDomainExceptionIsThrown(): void
@@ -70,23 +69,23 @@ final class FirebaseDecoderTest extends TestCase
         $this->decoder->decode($token);
     }
 
-    public static function beforeValidProvider(): Generator
-    {
-        yield 'nbf is in the future' => [['iat' => time(), 'nbf' => (new DateTime('+5 minutes'))->getTimestamp()]];
-
-        yield 'iat is in the future' => [['iat' => (new DateTime('+5 minutes'))->getTimestamp()]];
-    }
-
     /**
      * @param array<string, mixed> $payload
      */
-    #[DataProvider('beforeValidProvider')]
+    #[DataProvider('provideBeforeValidExceptionIsThrownCases')]
     public function testBeforeValidExceptionIsThrown(array $payload): void
     {
         $this->expectException(BeforeValidException::class);
         $token = $this->encode($payload);
 
         $this->decoder->decode($token);
+    }
+
+    public static function provideBeforeValidExceptionIsThrownCases(): iterable
+    {
+        yield 'nbf is in the future' => [['iat' => time(), 'nbf' => (new DateTime('+5 minutes'))->getTimestamp()]];
+
+        yield 'iat is in the future' => [['iat' => (new DateTime('+5 minutes'))->getTimestamp()]];
     }
 
     public function testExpiredExceptionIsThrown(): void
