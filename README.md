@@ -38,7 +38,7 @@ $app->run();
 ```
 
 > [!NOTE]
-> For documentation on v1.x which is conpatiable with `tuupola/slim-jwt-auth`
+> V1 is still supported!! For documentation on v1.x which is compatible with `tuupola/slim-jwt-auth`
 > see [1.x](https://github.com/JimTools/jwt-auth/blob/1.x/README.md)
 
 ## Install

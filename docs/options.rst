@@ -24,7 +24,7 @@ relaxed
 
 .. note::
 
-  This is useful for development perposes but is **not recomended** for production
+  This is useful for development purposes but is **not recommended** for production
 
 header
 ------
@@ -66,7 +66,7 @@ common use is to not including the bearer.
 attribute
 ---------
 
-:Summary: Control what the attribute name where the decoded token is storged on the request
+:Summary: Control what the attribute name where the decoded token is stored on the request
 :Types: string|null
 :Default: ``token``
 
@@ -79,7 +79,7 @@ attribute
 
 .. note::
 
-  If set to null no attribute will be added to the requesst.
+  If set to null no attribute will be added to the request.
 
 before
 ------
@@ -89,18 +89,18 @@ before
 :Default: ``none``
 
 Sometimes it's useful to modify the request to the next handler for example
-adding user infomation into the request for csutomer authorization handing.
-This must be an instanc of ``BeforeHandlerInterface``
+adding user information into the request for customer authorization handing.
+This must be an instance of ``BeforeHandlerInterface``
 
 .. code-block:: php
 
-  class MyBeforeHandler impliments BeforeHandlerInterface {
+  class MyBeforeHandler implements BeforeHandlerInterface {
     /**
      * @param array{decoded: array<string, mixed>, token: string} $arguments
      */
     public function __invoke(ServerRequestInterface $request, array $arguments): ServerRequestInterface
     {
-      // adds the unparsd token to the requeest
+      // adds the unparsed token to the request
       return $request->withAttribute('raw', $arguments['token'])
     }
   }
@@ -122,7 +122,7 @@ This is mostly useful for adding additional response headers.
 
 .. code-block:: php
 
-  class MyAfterHandlerInterface impliments AfterHandlerInterface
+  class MyAfterHandlerInterface implements AfterHandlerInterface
   {
     /**
      * @param array{decoded: array<string, mixed>, token: string} $arguments
