@@ -48,6 +48,9 @@ final class FirebaseDecoderTest extends TestCase
         $this->decoder->decode($token);
     }
 
+    /**
+     * @return iterable<array<string>>
+     */
     public static function provideUnexpectedValueExceptionIsThrownCases(): iterable
     {
         yield 'empty' => [''];
@@ -81,6 +84,9 @@ final class FirebaseDecoderTest extends TestCase
         $this->decoder->decode($token);
     }
 
+    /**
+     * @return iterable<array<array{iat:int, nbf?:int}>>
+     */
     public static function provideBeforeValidExceptionIsThrownCases(): iterable
     {
         yield 'nbf is in the future' => [['iat' => time(), 'nbf' => (new DateTime('+5 minutes'))->getTimestamp()]];

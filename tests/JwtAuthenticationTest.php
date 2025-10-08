@@ -30,6 +30,8 @@ use RuntimeException;
 
 /**
  * @internal
+ *
+ * @phpstan-type TokenClaims array{iss: string, aud: string, sub: string, scope: array<string>}
  */
 #[CoversClass(JwtAuthentication::class)]
 #[UsesClass(Secret::class), UsesClass(Options::class), UsesClass(FirebaseDecoder::class)]
@@ -381,7 +383,7 @@ final class JwtAuthenticationTest extends TestCase
             ->withHeader('Authorization', 'Bearer ' . self::$acmeToken);
 
         $default = static function (ServerRequestInterface $request) {
-            /** @var array<string, mixed> */
+            /** @var TokenClaims $acmeToken */
             $acmeToken = $request->getAttribute('token');
 
             $response = (new ResponseFactory())->createResponse();
@@ -405,7 +407,7 @@ final class JwtAuthenticationTest extends TestCase
             ->withHeader('Authorization', 'Bearer ' . self::$acmeToken);
 
         $default = static function (ServerRequestInterface $request) {
-            /** @var array<string, mixed>$acmeToken */
+            /** @var TokenClaims $acmeToken */
             $acmeToken = $request->getAttribute('nekot');
 
             $response = (new ResponseFactory())->createResponse();

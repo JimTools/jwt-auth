@@ -7,6 +7,7 @@ namespace JimTools\JwtAuth\Test\Rector\JwtAuthUpgradeRector;
 use JimTools\JwtAuth\Rector\JwtAuthUpgradeRector;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
+use Rector\Testing\Fixture\FixtureFileFinder;
 use Rector\Testing\PHPUnit\AbstractRectorTestCase;
 
 /**
@@ -21,6 +22,9 @@ final class JwtAuthUpgradeRectorTest extends AbstractRectorTestCase
         $this->doTestFile($filePath);
     }
 
+    /**
+     * @return iterable<FixtureFileFinder>
+     */
     public static function provideCases(): iterable
     {
         return self::yieldFilesFromDirectory(__DIR__ . '/Fixture');
