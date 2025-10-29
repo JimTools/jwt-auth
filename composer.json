@@ -32,9 +32,9 @@
         "equip/dispatch": "^2.0",
         "friendsofphp/php-cs-fixer": "^3.89",
         "laminas/laminas-diactoros": "^3.8",
-        "phpstan/phpstan": "^1.12",
+        "phpstan/phpstan": "^2.1",
         "phpunit/phpunit": "^11.5 || ^12.4",
-        "rector/rector": "^1.1"
+        "rector/rector": "^2.2"
     },
     "autoload": {
         "psr-4": {
