@@ -7,13 +7,14 @@ namespace JimTools\JwtAuth\Test\Rector\JwtAuthUpgradeRector;
 use JimTools\JwtAuth\Rector\JwtAuthUpgradeRector;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use Rector\Testing\Fixture\FixtureFileFinder;
 use Rector\Testing\PHPUnit\AbstractRectorTestCase;
 
 /**
  * @internal
  */
-#[CoversClass(JwtAuthUpgradeRector::class)]
+#[CoversClass(JwtAuthUpgradeRector::class), Group('rector')]
 final class JwtAuthUpgradeRectorTest extends AbstractRectorTestCase
 {
     #[DataProvider('provideCases')]

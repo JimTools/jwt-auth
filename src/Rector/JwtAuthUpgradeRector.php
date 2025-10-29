@@ -317,7 +317,7 @@ final class JwtAuthUpgradeRector extends AbstractRector
 
         if ($key === 'relaxed' && $val instanceof Array_) {
             $items = array_map(
-                static fn (ArrayItem $i) => $i->value->value ?? throw new RuntimeException('relaxed item value is empty'),
+                static fn (ArrayItem $item) => $item->value->value ?? throw new RuntimeException('relaxed item value is empty'),
                 $val->items
             );
 

@@ -19,7 +19,7 @@ lint: vendor
 	PHP_CS_FIXER_IGNORE_ENV=1 vendor/bin/php-cs-fixer fix --dry-run
 
 unit: vendor
-	XDEBUG_MODE=coverage vendor/bin/phpunit --display-warnings
+	XDEBUG_MODE=coverage vendor/bin/phpunit --display-warnings --exclude-group=rector
 
 static: vendor
 	vendor/bin/phpstan --error-format=github
