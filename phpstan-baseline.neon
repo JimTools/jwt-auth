@@ -1,21 +1,2 @@
 parameters:
 	ignoreErrors:
-		-
-			message: "#^Access to an undefined property PhpParser\\\\Node\\\\Expr\\:\\:\\$value\\.$#"
-			count: 3
-			path: src/Rector/JwtAuthUpgradeRector.php
-
-		-
-			message: "#^Cannot access property \\$value on PhpParser\\\\Node\\\\Expr\\|null\\.$#"
-			count: 2
-			path: src/Rector/JwtAuthUpgradeRector.php
-
-		-
-			message: "#^Instanceof between \\*NEVER\\* and ArrayAccess will always evaluate to false\\.$#"
-			count: 1
-			path: src/Rector/JwtAuthUpgradeRector.php
-
-		-
-			message: "#^Parameter \\#1 \\$callback of function array_map expects \\(callable\\(PhpParser\\\\Node\\\\ArrayItem\\)\\: mixed\\)\\|null, Closure\\(PhpParser\\\\Node\\\\Expr\\\\ArrayItem\\)\\: mixed given\\.$#"
-			count: 1
-			path: src/Rector/JwtAuthUpgradeRector.php

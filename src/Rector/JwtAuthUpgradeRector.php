@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace JimTools\JwtAuth\Rector;
 
-use ArrayAccess;
 use JimTools\JwtAuth\Decoder\FirebaseDecoder;
 use JimTools\JwtAuth\Middleware\JwtAuthentication;
 use JimTools\JwtAuth\Options;
@@ -14,9 +13,9 @@ use JimTools\JwtAuth\Rules\RuleInterface;
 use JimTools\JwtAuth\Secret;
 use PhpParser\Node;
 use PhpParser\Node\Arg;
+use PhpParser\Node\ArrayItem;
 use PhpParser\Node\Expr;
 use PhpParser\Node\Expr\Array_;
-use PhpParser\Node\Expr\ArrayItem;
 use PhpParser\Node\Expr\Closure;
 use PhpParser\Node\Expr\ConstFetch;
 use PhpParser\Node\Expr\New_;
@@ -35,7 +34,6 @@ use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 
 use function count;
 use function in_array;
-use function is_array;
 
 final class JwtAuthUpgradeRector extends AbstractRector
 {
@@ -143,7 +141,7 @@ final class JwtAuthUpgradeRector extends AbstractRector
         $secret = null;
         $optionArgs = [];
         foreach ($options->items as $item) {
-            $key = $item->key->value;
+            $key = $item->key->value ?? '';
             $val = $item->value;
             if (!in_array($key, self::KNOWN_KEYS, true)) {
                 continue;
@@ -187,8 +185,13 @@ final class JwtAuthUpgradeRector extends AbstractRector
                 $secret = [$val];
                 if ($val instanceof Array_) {
                     $secret = [];
-                    foreach ($val->items as $item) {
-                        $secret[$item->key->value] = $item->value;
+
+                    /** @var ArrayItem $sItem */
+                    foreach ($val->items as $sItem) {
+                        if ($item->key === null || !isset($sItem->key->value)) {
+                            throw new RuntimeException('secret key is empty');
+                        }
+                        $secret[$sItem->key->value] = $sItem->value;
                     }
                 }
 
@@ -197,12 +200,18 @@ final class JwtAuthUpgradeRector extends AbstractRector
 
             if ($key === 'algorithm' && $val instanceof Array_) {
                 $algo = [];
-                foreach ($val->items as $item) {
-                    if ($item->key === null) {
-                        $algo[] = $item->value;
-                    } else {
-                        $algo[$item->key->value] = $item->value;
+
+                /** @var ArrayItem $aItem */
+                foreach ($val->items as $aItem) {
+                    if ($aItem->key !== null) {
+                        $aItem->key->value ?? throw new RuntimeException('algorithm key is empty');
+
+                        $algo[$aItem->key->value] = $aItem->value;
+
+                        continue;
                     }
+
+                    $algo[] = $aItem->value;
                 }
 
                 continue;
@@ -308,7 +317,7 @@ final class JwtAuthUpgradeRector extends AbstractRector
 
         if ($key === 'relaxed' && $val instanceof Array_) {
             $items = array_map(
-                static fn (ArrayItem $i) => $i->value->value,
+                static fn (ArrayItem $item) => $item->value->value ?? throw new RuntimeException('relaxed item value is empty'),
                 $val->items
             );
 
@@ -375,18 +384,17 @@ final class JwtAuthUpgradeRector extends AbstractRector
      */
     private function createDecoderArgs(array $secrets, array $algorithms): array
     {
+        if (empty($secrets)) {
+            throw new RuntimeException('secrets argument is empty');
+        }
+
         $keyObjects = [];
         $hasMany = count($algorithms) > 1;
         foreach ($algorithms as $kid => $algo) {
-            $keyId = !is_numeric($kid) ? $kid : $algo->value;
-
-            $secret = $secrets;
-            if (is_array($secret) || $secret instanceof ArrayAccess) {
-                $secret = $secrets[$kid] ?? $secrets[0];
-            }
+            $keyId = !is_numeric($kid) ? $kid : $algo->value ?? throw new RuntimeException('algorithms value is null');
 
             $args = [
-                new Arg($secret),
+                new Arg($secrets[$kid] ?? $secrets[0]),
                 new Arg($algo),
             ];
 
