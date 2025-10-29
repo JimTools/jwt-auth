@@ -384,8 +384,8 @@ final class JwtAuthUpgradeRector extends AbstractRector
      */
     private function createDecoderArgs(array $secrets, array $algorithms): array
     {
-        if ($secrets === null) {
-            throw new RuntimeException('Failed to get secrets');
+        if (empty($secrets)) {
+            throw new RuntimeException('secrets argument is empty');
         }
 
         $keyObjects = [];
