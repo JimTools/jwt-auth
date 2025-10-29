@@ -35,6 +35,8 @@ jobs:
         run: make lint
       - name: Run unit tests
         run: make unit
+      - name: Run rector tests
+        run: XDEBUG_MODE=coverage vendor/bin/phpunit --group=rector --display-warnings
       - name: Run static analysis
         run: make static
       - name: Upload coverage
