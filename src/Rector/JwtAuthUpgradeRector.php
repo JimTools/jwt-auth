@@ -363,7 +363,7 @@ final class JwtAuthUpgradeRector extends AbstractRector
         }
 
         if ($ignore !== null) {
-            $args[] = new Arg($ignore, name: new Identifier('ignnore'));
+            $args[] = new Arg($ignore, name: new Identifier('ignore'));
         }
 
         $pathObj = new New_(new Name(RequestPathRule::class), $args);

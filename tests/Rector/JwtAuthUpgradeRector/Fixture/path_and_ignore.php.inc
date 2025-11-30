@@ -18,6 +18,6 @@ namespace JimTools\JwtAuth\Test\Rector\JwtAuthUpgradeRector\Fixture;
 
 use JimTools\JwtAuth\Middleware\JwtAuthentication;
 
-$auth = new JwtAuthentication(new JimTools\JwtAuth\Options(), new JimTools\JwtAuth\Decoder\FirebaseDecoder(new JimTools\JwtAuth\Secret($_ENV['JWT_SECRET'], 'HS256')), [new JimTools\JwtAuth\Rules\RequestPathRule(path: ['/', '/api'], ignnore: ['/api/auth']), new JimTools\JwtAuth\Rules\RequestMethodRule()]);
+$auth = new JwtAuthentication(new JimTools\JwtAuth\Options(), new JimTools\JwtAuth\Decoder\FirebaseDecoder(new JimTools\JwtAuth\Secret($_ENV['JWT_SECRET'], 'HS256')), [new JimTools\JwtAuth\Rules\RequestPathRule(path: ['/', '/api'], ignore: ['/api/auth']), new JimTools\JwtAuth\Rules\RequestMethodRule()]);
 
 ?>
