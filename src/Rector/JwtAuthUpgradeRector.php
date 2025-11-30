@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace JimTools\JwtAuth\Rector;
 
+use InvalidArgumentException;
 use JimTools\JwtAuth\Decoder\FirebaseDecoder;
 use JimTools\JwtAuth\Middleware\JwtAuthentication;
 use JimTools\JwtAuth\Options;
@@ -25,7 +26,7 @@ use PhpParser\Node\Scalar\String_;
 use PhpParser\Node\Stmt\Class_;
 use PhpParser\Node\Stmt\ClassMethod;
 use PhpParser\Node\Stmt\Use_;
-use PhpParser\Node\Stmt\UseUse;
+use PhpParser\Node\UseItem;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Rector\Rector\AbstractRector;
@@ -75,7 +76,7 @@ final class JwtAuthUpgradeRector extends AbstractRector
                     continue;
                 }
 
-                $newUse = [new UseUse($this->replaceUse($name), $use->alias)];
+                $newUse = [new UseItem($this->replaceUse($name), $use->alias)];
 
                 return new Use_($newUse);
             }
@@ -189,7 +190,7 @@ final class JwtAuthUpgradeRector extends AbstractRector
                     /** @var ArrayItem $sItem */
                     foreach ($val->items as $sItem) {
                         if ($item->key === null || !isset($sItem->key->value)) {
-                            throw new RuntimeException('secret key is empty');
+                            throw new InvalidArgumentException('secret key is empty');
                         }
                         $secret[$sItem->key->value] = $sItem->value;
                     }
@@ -204,7 +205,7 @@ final class JwtAuthUpgradeRector extends AbstractRector
                 /** @var ArrayItem $aItem */
                 foreach ($val->items as $aItem) {
                     if ($aItem->key !== null) {
-                        $aItem->key->value ?? throw new RuntimeException('algorithm key is empty');
+                        $aItem->key->value ?? throw new InvalidArgumentException('algorithm key is empty');
 
                         $algo[$aItem->key->value] = $aItem->value;
 
@@ -385,13 +386,13 @@ final class JwtAuthUpgradeRector extends AbstractRector
     private function createDecoderArgs(array $secrets, array $algorithms): array
     {
         if (empty($secrets)) {
-            throw new RuntimeException('secrets argument is empty');
+            throw new InvalidArgumentException('secrets argument is empty');
         }
 
         $keyObjects = [];
         $hasMany = count($algorithms) > 1;
         foreach ($algorithms as $kid => $algo) {
-            $keyId = !is_numeric($kid) ? $kid : $algo->value ?? throw new RuntimeException('algorithms value is null');
+            $keyId = !is_numeric($kid) ? $kid : $algo->value ?? throw new InvalidArgumentException('algorithms value is null');
 
             $args = [
                 new Arg($secrets[$kid] ?? $secrets[0]),
@@ -434,7 +435,7 @@ final class JwtAuthUpgradeRector extends AbstractRector
                 return new Name(RuleInterface::class);
 
             default:
-                throw new RuntimeException('unknown class name'); // @codeCoverageIgnore
+                throw new InvalidArgumentException('unknown class name'); // @codeCoverageIgnore
         }
     }
 }

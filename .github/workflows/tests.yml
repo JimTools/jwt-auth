@@ -36,12 +36,14 @@ jobs:
       - name: Run unit tests
         run: make unit
       - name: Run rector tests
-        run: XDEBUG_MODE=coverage vendor/bin/phpunit --group=rector --display-warnings
+        run: XDEBUG_MODE=coverage vendor/bin/phpunit --group=rector --display-warnings --coverage-clover=coverage-rector.xml
       - name: Run static analysis
         run: make static
       - name: Upload coverage
-        uses: codecov/codecov-action@v4
+        uses: codecov/codecov-action@v5
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           slug: jimtools/jwt-auth
+          files: coverage.xml,coverage-rector.xml
+
 
