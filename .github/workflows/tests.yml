@@ -1,15 +1,11 @@
 name: Tests
 on:
-  push:
+  pull_request:
     branches:
       - main
       - 2.x
-  pull_request:
+      - 1.x
   workflow_dispatch:
-
-concurrency:
-  group: "pages"
-  cancel-in-progress: false
 
 jobs:
   build:
@@ -43,47 +39,4 @@ jobs:
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           slug: jimtools/jwt-auth
-
-  docs:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Install PIP Dependencies
-        uses: actions/setup-python@v5
-        with:
-          cache: 'pip'
-      - run: python -m pip install -r ./docs/requirements.txt
-      - name: Build Docs
-        run: |
-          git fetch --tags
-          cd docs
-          mkdir _build
-          python build_docs.py
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: './pages'
-  deploy:
-    needs: docs
-
-    permissions:
-      contents: read
-      pages: write
-      id-token: write
-
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
 

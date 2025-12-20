@@ -1,0 +1,7 @@
+build
+bin
+include
+lib
+lib64
+pyvenv.cfg
+.DS_Store
