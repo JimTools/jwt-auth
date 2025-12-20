@@ -1,8 +1,10 @@
 name: Publish Docs
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
+      - 2.x
       - 1.x
 
 concurrency:
@@ -16,18 +18,19 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Install PIP Dependencies
-        uses: actions/setup-python@v5
-        with:
-          cache: 'pip'
-      - run: python -m pip install -r ./docs/requirements.txt
+      - name: Install UV
+        uses: astral-sh/setup-uv@v7
+
+      - name: Set up Python
+        run: uv python install
+
+      - name: Install the project
+        run: uv sync --locked --all-groups --directory ./docs
 
       - name: Build Docs
         run: |
           git fetch --tags
-          cd docs
-          mkdir _build
-          python build_docs.py
+          uv run --directory ./docs sphinx-multiversion . build
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
@@ -35,7 +38,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: './pages'
+          path: './docs/build'
   deploy:
     needs: docs
 
@@ -56,4 +59,3 @@ jobs:
         uses: actions/deploy-pages@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-
