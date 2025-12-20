@@ -28,11 +28,13 @@ use PHPUnit\Framework\TestCase;
 final class FirebaseDecoderTest extends TestCase
 {
     private DecoderInterface $decoder;
+    private ?string $secret = null;
 
     #[Override]
     protected function setUp(): void
     {
-        $this->decoder = new FirebaseDecoder(new Secret('tooManySecrets', 'HS256', 'acme'));
+        $this->secret = base64_encode(random_bytes(128));
+        $this->decoder = new FirebaseDecoder(new Secret($this->secret, 'HS256', 'acme'));
     }
 
     public function testInvalidArgumentExceptionIsThrown(): void
@@ -105,8 +107,8 @@ final class FirebaseDecoderTest extends TestCase
     public function testHappyPath(): void
     {
         $now = time();
-        $token = JWT::encode(['iat' => $now], 'tooManySecrets', 'HS256', null, []);
-        $decoded = (new FirebaseDecoder(new Secret('tooManySecrets', 'HS256')))->decode($token);
+        $token = JWT::encode(['iat' => $now], $this->secret, 'HS256', null, []);
+        $decoded = (new FirebaseDecoder(new Secret($this->secret, 'HS256')))->decode($token);
 
         self::assertSame($now, $decoded['iat']);
     }
@@ -116,6 +118,6 @@ final class FirebaseDecoderTest extends TestCase
      */
     private function encode(array $payload): string
     {
-        return JWT::encode($payload, 'tooManySecrets', 'HS256', 'acme');
+        return JWT::encode($payload, $this->secret, 'HS256', 'acme');
     }
 }

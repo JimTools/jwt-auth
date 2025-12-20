@@ -1,6 +1,6 @@
 {
     "name": "jimtools/jwt-auth",
-    "description": "Drop in replacement for tuupola/slim-jwt-auth",
+    "description": "PSR-15 JWT Authentication middleware, A replacement for tuupola/slim-jwt-auth",
     "keywords": [
         "psr-7",
         "psr-15",
@@ -24,7 +24,7 @@
     },
     "require": {
         "php": "~8.2 || ~8.3 || ~8.4 || ~8.5",
-        "firebase/php-jwt": "^6.0",
+        "firebase/php-jwt": "^7.0",
         "psr/http-message": "^1.0 || ^2.0",
         "psr/http-server-middleware": "^1.0"
     },
