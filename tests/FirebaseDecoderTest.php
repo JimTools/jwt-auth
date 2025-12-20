@@ -20,6 +20,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use RuntimeException;
 
 /**
  * @internal
@@ -28,7 +29,7 @@ use PHPUnit\Framework\TestCase;
 final class FirebaseDecoderTest extends TestCase
 {
     private DecoderInterface $decoder;
-    private ?string $secret = null;
+    private string $secret = '';
 
     #[Override]
     protected function setUp(): void
@@ -111,6 +112,28 @@ final class FirebaseDecoderTest extends TestCase
         $decoded = (new FirebaseDecoder(new Secret($this->secret, 'HS256')))->decode($token);
 
         self::assertSame($now, $decoded['iat']);
+    }
+
+    public function testUsingRsaCert(): void
+    {
+        $privateKey = openssl_pkey_new([
+            'private_key_bits' => 2048,
+            'private_key_type' => OPENSSL_KEYTYPE_RSA,
+        ]);
+        if ($privateKey === false) {
+            throw new RuntimeException('Failed to generate RSA key');
+        }
+
+        $publicKey = openssl_pkey_get_details($privateKey);
+        if ($publicKey === false) {
+            throw new RuntimeException('Failed to get RSA public key');
+        }
+        $time = time();
+        $token = JWT::encode(['iat' => $time], $privateKey, 'RS256');
+
+        $decoded = (new FirebaseDecoder(new Secret($publicKey['key'], 'RS256')))->decode($token);
+
+        self::assertSame($time, $decoded['iat']);
     }
 
     /**
