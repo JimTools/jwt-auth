@@ -20,6 +20,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use RuntimeException;
 
 /**
  * @internal
@@ -28,11 +29,13 @@ use PHPUnit\Framework\TestCase;
 final class FirebaseDecoderTest extends TestCase
 {
     private DecoderInterface $decoder;
+    private string $secret = '';
 
     #[Override]
     protected function setUp(): void
     {
-        $this->decoder = new FirebaseDecoder(new Secret('tooManySecrets', 'HS256', 'acme'));
+        $this->secret = base64_encode(random_bytes(128));
+        $this->decoder = new FirebaseDecoder(new Secret($this->secret, 'HS256', 'acme'));
     }
 
     public function testInvalidArgumentExceptionIsThrown(): void
@@ -105,10 +108,32 @@ final class FirebaseDecoderTest extends TestCase
     public function testHappyPath(): void
     {
         $now = time();
-        $token = JWT::encode(['iat' => $now], 'tooManySecrets', 'HS256', null, []);
-        $decoded = (new FirebaseDecoder(new Secret('tooManySecrets', 'HS256')))->decode($token);
+        $token = JWT::encode(['iat' => $now], $this->secret, 'HS256', null, []);
+        $decoded = (new FirebaseDecoder(new Secret($this->secret, 'HS256')))->decode($token);
 
         self::assertSame($now, $decoded['iat']);
+    }
+
+    public function testUsingRsaCert(): void
+    {
+        $privateKey = openssl_pkey_new([
+            'private_key_bits' => 2048,
+            'private_key_type' => OPENSSL_KEYTYPE_RSA,
+        ]);
+        if ($privateKey === false) {
+            throw new RuntimeException('Failed to generate RSA key');
+        }
+
+        $publicKey = openssl_pkey_get_details($privateKey);
+        if ($publicKey === false) {
+            throw new RuntimeException('Failed to get RSA public key');
+        }
+        $time = time();
+        $token = JWT::encode(['iat' => $time], $privateKey, 'RS256');
+
+        $decoded = (new FirebaseDecoder(new Secret($publicKey['key'], 'RS256')))->decode($token);
+
+        self::assertSame($time, $decoded['iat']);
     }
 
     /**
@@ -116,6 +141,6 @@ final class FirebaseDecoderTest extends TestCase
      */
     private function encode(array $payload): string
     {
-        return JWT::encode($payload, 'tooManySecrets', 'HS256', 'acme');
+        return JWT::encode($payload, $this->secret, 'HS256', 'acme');
     }
 }
