@@ -6,15 +6,6 @@
     <span class="fa fa-caret-down"></span>
   </span>
   <div class="rst-other-versions">
-    {% if languages %}
-    <dl>
-      <dt>{{ _('Languages') }}</dt>
-        {% for item in languages %}
-          <dd><a href="{{ item.url }}/index.html">{{ item.name }}</a></dd>
-        {% endfor %}
-    </dl>
-    {% endif %}
-
     {%- if versions.tags %}
     <dl>
       <dt>Tags</dt>
