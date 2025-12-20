@@ -1,9 +1,0 @@
----
-"latest":
-  tag: "main"
-  languages:
-    - "en"
-"1.0":
-  tag: "1.x"
-  languages:
-    - "en"
