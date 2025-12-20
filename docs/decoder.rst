@@ -47,7 +47,7 @@ to work out which secret to use for the token.
   when only using a singular algorithm and secret you can leave this as null
 
 Exceptions
-=========
+==========
 
 If the decoder cannnot decode the token it will throw one of several exception.
 
