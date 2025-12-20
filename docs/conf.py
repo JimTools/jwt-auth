@@ -44,8 +44,8 @@ html_theme = 'sphinx_rtd_theme'
 highlight_language = "php"
 
 smv_tag_whitelist = r'^.*$'
-smv_branch_whitelist = r'^.*$'
-smv_remote_whitelist = r'^head/(\d\.x|main)$'
+smv_branch_whitelist = r'^(\d\.x|main)$'
+smv_remote_whitelist = r'^.*$'
 smv_released_pattern = r'^tags/.*$'
 smv_outputdir_format = '{ref.name}'
 smv_prefer_remote_refs = False
