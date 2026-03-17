@@ -31,6 +31,9 @@ jobs:
         run: |
           git fetch --all
           uv run --directory ./docs sphinx-multiversion . build
+          uv run --directory ./docs sphinx-build . build
+          git checkout 1.x
+          uv run --directory ./docs sphinx-build . build/1.x
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
