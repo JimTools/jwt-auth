@@ -52,6 +52,7 @@ final class JwtAuthentication implements MiddlewareInterface
 
     /**
      * @throws AuthorizationException
+     * @throws RuntimeException if http is detected while secure mode is enabled.
      *
      * Process a request in PSR-15 style and return a response
      */
