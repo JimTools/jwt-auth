@@ -39,7 +39,7 @@ $app->run();
 
 > [!NOTE]
 > V1 is still supported!! For documentation on v1.x which is compatible with `tuupola/slim-jwt-auth`
-> see [1.x](https://github.com/JimTools/jwt-auth/blob/1.x/README.md)
+> see [1.x](https://github.com/JimTools/jwt-auth/blob/1.x/README.md) or [GitHub Pages](https://jimtools.github.io/jwt-auth/1.x/)
 
 ## Install
 
@@ -55,7 +55,7 @@ composer require jimtools/jwt-auth
 GitHub issues are used for only to discuss bugs and new features, for support
 please use GitHub discussions.
 
-- [Documentation](https://jimtools.github.io/jwt-auth/)
+- [Documentation](https://jimtools.github.io/jwt-auth/main)
 - [Support](https://github.com/JimTools/jwt-auth/discussions)
 - [Bugs](https://github.com/JimTools/jwt-auth/issues)
 
