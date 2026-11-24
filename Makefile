@@ -16,7 +16,7 @@ vendor: $(wildcard composer.lock)
 	composer install --prefer-dist
 
 lint: vendor
-	PHP_CS_FIXER_IGNORE_ENV=1 vendor/bin/php-cs-fixer fix --dry-run
+	vendor/bin/php-cs-fixer check --diff
 
 unit: vendor
 	XDEBUG_MODE=coverage vendor/bin/phpunit --display-warnings --exclude-group=rector
