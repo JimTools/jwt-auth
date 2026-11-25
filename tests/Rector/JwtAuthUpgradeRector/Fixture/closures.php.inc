@@ -20,20 +20,26 @@ $auth = new JwtAuthentication([
 
 namespace JimTools\JwtAuth\Test\Rector\JwtAuthUpgradeRector\Fixture;
 
+use JimTools\JwtAuth\Options;
+use JimTools\JwtAuth\Handlers\BeforeHandlerInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use JimTools\JwtAuth\Handlers\AfterHandlerInterface;
+use Psr\Http\Message\ResponseInterface;
+use JimTools\JwtAuth\Decoder\FirebaseDecoder;
+use JimTools\JwtAuth\Secret;
 use JimTools\JwtAuth\Middleware\JwtAuthentication;
-
-$auth = new JwtAuthentication(new JimTools\JwtAuth\Options(before: new class implements JimTools\JwtAuth\Handlers\BeforeHandlerInterface
+$auth = new JwtAuthentication(new Options(before: new class implements BeforeHandlerInterface
 {
-    public function __invoke(Psr\Http\Message\ServerRequestInterface $req, array $args): Psr\Http\Message\ServerRequestInterface
+    public function __invoke(ServerRequestInterface $req, array $args): ServerRequestInterface
     {
         return $req->withHeader('Foo', 'Bar');
     }
-}, after: new class implements JimTools\JwtAuth\Handlers\AfterHandlerInterface
+}, after: new class implements AfterHandlerInterface
 {
-    public function __invoke(Psr\Http\Message\ResponseInterface $res, array $arguments): Psr\Http\Message\ResponseInterface
+    public function __invoke(ResponseInterface $res, array $arguments): ResponseInterface
     {
         return $res->withStatus(201);
     }
-}), new JimTools\JwtAuth\Decoder\FirebaseDecoder(new JimTools\JwtAuth\Secret(getenv('JWT_SECRET'), 'HS256')));
+}), new FirebaseDecoder(new Secret(getenv('JWT_SECRET'), 'HS256')));
 
 ?>

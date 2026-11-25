@@ -1,0 +1,39 @@
+name: Linting & Static Analysis
+on:
+  pull_request:
+    branches:
+      - main
+      - 1.x
+      - 2.x
+      - 3.x
+  workflow_dispatch:
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        operating-system: [ubuntu-latest]
+        php-versions: ["8.2"]
+        dependency-versions: ["highest"]
+    runs-on: ${{ matrix.operating-system }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP and extensions
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-versions }}
+
+      - name: Install Composer dependencies
+        uses: ramsey/composer-install@v3
+        with:
+          dependency-versions: ${{ matrix.dependency-versions }}
+
+      - name: Run linter
+        run: make lint
+
+      - name: Run static analysis
+        run: make static
+

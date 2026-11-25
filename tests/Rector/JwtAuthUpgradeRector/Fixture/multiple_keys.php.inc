@@ -20,8 +20,10 @@ $auth = new JwtAuthentication([
 
 namespace JimTools\JwtAuth\Test\Rector\JwtAuthUpgradeRector\Fixture;
 
+use JimTools\JwtAuth\Options;
+use JimTools\JwtAuth\Decoder\FirebaseDecoder;
+use JimTools\JwtAuth\Secret;
 use JimTools\JwtAuth\Middleware\JwtAuthentication;
-
-$auth = new JwtAuthentication(new JimTools\JwtAuth\Options(), new JimTools\JwtAuth\Decoder\FirebaseDecoder(new JimTools\JwtAuth\Secret('secret1', 'HS256', 'a'), new JimTools\JwtAuth\Secret('secret2', 'HS256', 'b')));
+$auth = new JwtAuthentication(new Options(), new FirebaseDecoder(new Secret('secret1', 'HS256', 'a'), new Secret('secret2', 'HS256', 'b')));
 
 ?>

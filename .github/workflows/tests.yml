@@ -1,10 +1,11 @@
-name: Tests
+name: Unit Tests
 on:
   pull_request:
     branches:
       - main
       - 1.x
       - 2.x
+      - 3.x
   workflow_dispatch:
 
 jobs:
@@ -13,7 +14,7 @@ jobs:
       fail-fast: false
       matrix:
         operating-system: [ubuntu-latest]
-        php-versions: ["8.2", "8.3", "8.4", "8.5"]
+        php-versions: ["8.2", "8.3", "8.4", "8.5", "8.6"]
         dependency-versions: ["highest"]
     runs-on: ${{ matrix.operating-system }}
     steps:
