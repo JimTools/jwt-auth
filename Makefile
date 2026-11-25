@@ -20,6 +20,7 @@ lint: vendor
 
 unit: vendor
 	XDEBUG_MODE=coverage vendor/bin/phpunit --display-warnings --exclude-group=rector
+	XDEBUG_MODE=coverage vendor/bin/phpunit --group=rector --display-warnings --coverage-clover=coverage-rector.xml
 
 static: vendor
 	vendor/bin/phpstan --error-format=github

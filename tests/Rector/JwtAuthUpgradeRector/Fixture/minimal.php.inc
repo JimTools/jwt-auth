@@ -26,8 +26,10 @@ $auth = new JWTAuth([
 
 namespace JimTools\JwtAuth\Test\Rector\JwtAuthUpgradeRector\Fixture;
 
+use JimTools\JwtAuth\Options;
+use JimTools\JwtAuth\Decoder\FirebaseDecoder;
+use JimTools\JwtAuth\Secret;
 use JimTools\JwtAuth\Middleware\JwtAuthentication as JWTAuth;
-
-$auth = new JWTAuth(new JimTools\JwtAuth\Options(), new JimTools\JwtAuth\Decoder\FirebaseDecoder(new JimTools\JwtAuth\Secret(getenv('JWT_SECRET'), 'HS256')));
+$auth = new JWTAuth(new Options(), new FirebaseDecoder(new Secret(getenv('JWT_SECRET'), 'HS256')));
 
 ?>

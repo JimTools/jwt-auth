@@ -6,12 +6,15 @@ namespace JimTools\JwtAuth\Rector;
 
 use InvalidArgumentException;
 use JimTools\JwtAuth\Decoder\FirebaseDecoder;
+use JimTools\JwtAuth\Handlers\AfterHandlerInterface;
+use JimTools\JwtAuth\Handlers\BeforeHandlerInterface;
 use JimTools\JwtAuth\Middleware\JwtAuthentication;
 use JimTools\JwtAuth\Options;
 use JimTools\JwtAuth\Rules\RequestMethodRule;
 use JimTools\JwtAuth\Rules\RequestPathRule;
 use JimTools\JwtAuth\Rules\RuleInterface;
 use JimTools\JwtAuth\Secret;
+use PhpParser\Modifiers;
 use PhpParser\Node;
 use PhpParser\Node\Arg;
 use PhpParser\Node\ArrayItem;
@@ -22,6 +25,7 @@ use PhpParser\Node\Expr\ConstFetch;
 use PhpParser\Node\Expr\New_;
 use PhpParser\Node\Identifier;
 use PhpParser\Node\Name;
+use PhpParser\Node\Name\FullyQualified;
 use PhpParser\Node\Scalar\String_;
 use PhpParser\Node\Stmt\Class_;
 use PhpParser\Node\Stmt\ClassMethod;
@@ -30,8 +34,8 @@ use PhpParser\Node\UseItem;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Rector\Rector\AbstractRector;
+use Rector\RuleDoc\RuleDefinition;
 use RuntimeException;
-use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 
 use function count;
 use function in_array;
@@ -98,6 +102,7 @@ final class JwtAuthUpgradeRector extends AbstractRector
             [$optionArgs, $decoderArgs, $rules] = $this->extractArgs($options->value);
             $args = $this->replaceArgs($optionArgs, $decoderArgs, $rules);
             $node->args = $args;
+            $node->class = new FullyQualified(JwtAuthentication::class);
 
             return $node;
         }
@@ -121,8 +126,8 @@ final class JwtAuthUpgradeRector extends AbstractRector
      */
     private function replaceArgs(array $optionArgs, array $decoderArgs, ?Array_ $rules): array
     {
-        $optionObj = new Name(Options::class);
-        $decoder = new Name(FirebaseDecoder::class);
+        $optionObj = new FullyQualified(Options::class);
+        $decoder = new FullyQualified(FirebaseDecoder::class);
 
         return array_filter([
             new Arg(new New_($optionObj, $optionArgs)),
@@ -246,7 +251,7 @@ final class JwtAuthUpgradeRector extends AbstractRector
 
     private function convertAfter(Closure $val): New_
     {
-        $resp = new Identifier(ResponseInterface::class);
+        $resp = new FullyQualified(ResponseInterface::class);
         $val->returnType = $resp;
         $val->params[0]->type = $resp;
         $val->params[1]->type = new Identifier('array');
@@ -255,13 +260,13 @@ final class JwtAuthUpgradeRector extends AbstractRector
             null,
             [
                 'implements' => [
-                    new Name('JimTools\JwtAuth\Handlers\AfterHandlerInterface'),
+                    new FullyQualified(AfterHandlerInterface::class),
                 ],
                 'stmts' => [
                     new ClassMethod(
                         '__invoke',
                         [
-                            'flags' => Class_::MODIFIER_PUBLIC,
+                            'flags' => Modifiers::PUBLIC,
                             'params' => $val->params,
                             'returnType' => $resp,
                             'stmts' => $val->stmts,
@@ -277,7 +282,7 @@ final class JwtAuthUpgradeRector extends AbstractRector
 
     private function convertBefore(Closure $val): New_
     {
-        $req = new Identifier(ServerRequestInterface::class);
+        $req = new FullyQualified(ServerRequestInterface::class);
         $val->returnType = $req;
         $val->params[0]->type = $req;
         $val->params[1]->type = new Identifier('array');
@@ -286,13 +291,13 @@ final class JwtAuthUpgradeRector extends AbstractRector
             null,
             [
                 'implements' => [
-                    new Name('JimTools\JwtAuth\Handlers\BeforeHandlerInterface'),
+                    new FullyQualified(BeforeHandlerInterface::class),
                 ],
                 'stmts' => [
                     new ClassMethod(
                         '__invoke',
                         [
-                            'flags' => Class_::MODIFIER_PUBLIC,
+                            'flags' => Modifiers::PUBLIC,
                             'params' => $val->params,
                             'returnType' => $req,
                             'stmts' => $val->stmts,
@@ -358,6 +363,7 @@ final class JwtAuthUpgradeRector extends AbstractRector
             return null;
         }
 
+        $args = [];
         if ($paths !== null) {
             array_unshift($paths->items, new ArrayItem(new String_('/')));
             $args[] = new Arg($paths, name: new Identifier('path'));
@@ -367,12 +373,12 @@ final class JwtAuthUpgradeRector extends AbstractRector
             $args[] = new Arg($ignore, name: new Identifier('ignore'));
         }
 
-        $pathObj = new New_(new Name(RequestPathRule::class), $args);
+        $pathObj = new New_(new FullyQualified(RequestPathRule::class), $args);
 
         return new Array_(
             [
                 new ArrayItem($pathObj),
-                new ArrayItem(new New_(new Name(RequestMethodRule::class))),
+                new ArrayItem(new New_(new FullyQualified(RequestMethodRule::class))),
             ]
         );
     }
@@ -403,7 +409,7 @@ final class JwtAuthUpgradeRector extends AbstractRector
                 $args[] = new Arg(new String_($keyId));
             }
 
-            $keyObjects[] = new Arg(new New_(new Name(Secret::class), $args));
+            $keyObjects[] = new Arg(new New_(new FullyQualified(Secret::class), $args));
         }
 
         return $keyObjects;
